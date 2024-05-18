@@ -2,6 +2,7 @@ FROM php:8.2-fpm
 
 ARG UID
 EXPOSE $UID
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN adduser -u ${UID} --disabled-password --gecos "" appuser
 RUN mkdir /home/appuser/.ssh
@@ -21,16 +22,25 @@ RUN apt-get update \
 
 RUN curl https://getcomposer.org/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
 RUN composer self-update
+##RUN wget https://raw.githubusercontent.com/composer/getcomposer.org/76a7060ccb93902cd7576b67264ad91c8a2700e2/web/installer -O - -q | php -- --quiet && mv composer.phar chmod +x /usr/local/bin/composer
+RUN export COMPOSER_ALLOW_SUPERUSER=1
+#RUN source ~/.bashrc
+
+
 
 #RUN wget https://cs.symfony.com/download/php-cs-fixer-v2.phar -O php-cs-fixer
-RUN wget https://get.symfony.com/cli/installer -O - | bash
-RUN chmod a+x php-cs-fixer
-RUN mv php-cs-fixer /usr/local/bin/php-cs-fixer
+RUN wget https://get.symfony.com/cli/installer -O - | bash 
+#&& mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
+#&& mv /usr/bin/symfony /usr/bin/symfony
+#RUN chmod a+x php-cs-fixer
+#RUN mv php-cs-fixer /usr/local/bin/php-cs-fixer
+RUN git config --global user.email "ubinetfone@gmail.com" \
+  && git config --global user.name "Ricardo Miguel"
 
 RUN mkdir -p /appdata/www
 
 
 WORKDIR /appdata/www
 
-RUN symfony new --webapp my_project --version=lts
-RUN mv my_project/{*,.[!.]*} .
+#RUN cd /appdata/www && /root/.symfony5/bin/symfony new --webapp my_project
+##RUN mv my_project/{*,.[!.]*} .

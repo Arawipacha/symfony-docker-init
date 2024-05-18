@@ -8,7 +8,7 @@ services:
       args:
         UID: $U_ID
     ports:
-      - 300:80
+      - 1000:80
     volumes:
       - ./public:/appdata/www/public
     networks:
@@ -25,13 +25,16 @@ services:
     environment:
       PHP_IDE_CONFIG: serverName=Docker
       PHP_XDEBUG_ENABLED: 1
-      XDEBUG_CONFIG: remote_host=172.17.0.1 remote_port=9005 # Linux users
-#      XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9005 # MacOS users
+      COMPOSER_ALLOW_SUPERUSER: 1
+#      XDEBUG_CONFIG: remote_host=172.17.0.1 remote_port=9005 # Linux users
+      XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9005 # MacOS users
     volumes:
       - ./:/appdata/www
-      - ./docker/php/xdebug-linux.ini:/usr/local/etc/php/conf.d/xdebug.ini # Linux users
-#    - ./docker/php/xdebug-macos.ini:/usr/local/etc/php/conf.d/xdebug.ini # MacOS users
+ #     - ./docker/php/xdebug-linux.ini:/usr/local/etc/php/conf.d/xdebug.ini # Linux users
+      - ./docker/php/xdebug-macos.ini:/usr/local/etc/php/conf.d/xdebug.ini # MacOS users
       - ~/.ssh/id_rsa:/home/appuser/.ssh/id_rsa
+    env_file:
+      - .env
     networks:
       - docker-symfony-network
     depends_on:

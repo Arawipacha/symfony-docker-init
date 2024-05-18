@@ -1,7 +1,16 @@
 #!/bin/bash
-
+OS = $(shell uname)
 DOCKER_BE = docker-symfony-be
 UID = $(shell id -u)
+NAMESERVER_IP = $(shell ip address | grep docker0)
+
+ifeq ($(OS),Darwin)
+	NAMESERVER_IP = host.docker.internal
+else ifeq ($(NAMESERVER_IP),)
+	NAMESERVER_IP = $(shell grep nameserver /etc/resolv.conf  | cut -d ' ' -f2)
+else
+	NAMESERVER_IP = 172.17.0.1 # replace this IP with your "docker0" one (run "ip a" in your terminal to check it)
+endif
 
 help: ## Show this help message
 	@echo 'usage: make [target]'
@@ -24,6 +33,12 @@ build: ## Rebuilds all the containers
 
 prepare: ## Runs backend commands
 	$(MAKE) composer-install
+
+symfony: ## create project symfony
+	U_ID=${UID} docker exec --user ${UID} -it ${DOCKER_BE} /root/.symfony5/bin/symfony
+
+migrations: ## Runs the migrations
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bin/console doctrine:migrations:migrate -n --allow-no-migration
 
 # Backend commands
 composer-install: ## Installs composer dependencies
