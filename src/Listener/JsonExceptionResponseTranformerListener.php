@@ -11,6 +11,11 @@ class JsonExceptionResponseTranformerListener
     public function onKernelException(ExceptionEvent $event)
     {
         $exception = $event->getThrowable();
+        $path=$event->getRequest()->getPathInfo();
+        $path=str_starts_with($path, '/api');
+        if(!$path){
+            return ;
+        }
         $data=[
             'class'=> get_class($exception),
             'code'=> JsonResponse::HTTP_INTERNAL_SERVER_ERROR,

@@ -8,7 +8,7 @@ services:
       args:
         UID: $U_ID
     ports:
-      - 1000:80
+      - 80:80
     volumes:
       - ./public:/appdata/www/public
     networks:
@@ -34,7 +34,9 @@ services:
       - ./docker/php/xdebug-macos.ini:/usr/local/etc/php/conf.d/xdebug.ini # MacOS users
       - ~/.ssh/id_rsa:/home/appuser/.ssh/id_rsa
     env_file:
-      - .env
+      - .env 
+    ports:
+      - 5173:5173
     networks:
       - docker-symfony-network
     depends_on:

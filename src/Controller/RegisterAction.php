@@ -6,9 +6,12 @@ use App\Http\Requests\RegisterRequest;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Twig\Environment;
 
-class RegisterAction {
+class RegisterAction extends
+AbstractController{
 
     public function __construct() {
         
@@ -18,11 +21,18 @@ class RegisterAction {
     #[Route("api/register", methods:["POST"], name:"api_register")]
     public function __invoke(RegisterRequest $registerRequest, ProjectRepository $repo):JsonResponse
     {
-        //$p= $repo->find()
+        //$p= $repo->find(1);
         $data=[
             'name'=>$registerRequest->getName(),
             'email'=>$registerRequest->getEmail(),
         ];
         return new JsonResponse($data);
+    }
+
+    //#[Route("/", methods:["GET"], name:"WELCOME")]
+    public function index(Environment $twig):Response
+    {
+ return new Response($twig->render('base.html.twig'));
+
     }
 }
