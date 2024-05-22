@@ -25,3 +25,7 @@ services:
     App\Listener\JsonExceptionResponseTranformerListener:
         tags:
             - {name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 100}
+            
+    App\Security\APIAccessAllowedUserChecker:
+        tags:
+            - { name: security.user_checker.api, priority: 5 }

@@ -22,7 +22,7 @@ class ProjectController extends AbstractController
     }
 
 
-    #[Route('/api/projects', methods:["GET"], name: 'app_search_projects')]
+    #[Route('/api/projects', methods:['GET', 'HEAD'], name: 'app_search_projects',/* condition:"service('route_checker').check(request)" */)]
     public function all(Request $request): Response
     {
     

@@ -45,3 +45,22 @@ sf make:auth
 ### crear un usuario con authenticazione alcuni interface
 
 sf make:user
+
+register 
+
+{
+  "username":"pepito",
+  "email":"ricardo@gmail.com",
+  "password":"sdfdf"
+}
+
+
+login
+{
+    "security": {
+        "credentials": {
+            "login": "pepito",
+            "password": "sdfdf"
+        }
+    }
+}

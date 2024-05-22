@@ -3,13 +3,21 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\InheritanceType("JOINED")]
+#[ORM\DiscriminatorColumn(name:"tokenable_type", type:"string")]
+#[ORM\DiscriminatorMap([
+    "Employee::class"=>"Employee",
+    "Customer::class"=>"Customer",
+])]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -30,6 +38,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $deleted_at = null;
+
+    /**
+     * @var Collection<int, AccessToken>
+     */
+    #[ORM\OneToMany(targetEntity: AccessToken::class, mappedBy: 'tokenable', orphanRemoval: true)]
+    private Collection $tokens;
+
+    /* #[ORM\OneToOne(targetEntity: AccessToken::class)]
+    private ?AccessToken $accessToken; */
+
+    public function __construct()
+    {
+        $this->tokens = new ArrayCollection();
+        //$this->access_token= new AccessToken();
+    }
 
     public function getId(): ?int
     {
@@ -105,4 +131,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    public function getDeletedAt(): ?\DateTimeImmutable
+    {
+        return $this->deleted_at;
+    }
+
+    public function setDeletedAt(?\DateTimeImmutable $deleted_at): static
+    {
+        $this->deleted_at = $deleted_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AccessToken>
+     */
+    public function getTokens(): Collection
+    {
+        return $this->tokens;
+    }
+
+    public function addToken(AccessToken $token): static
+    {
+        if (!$this->tokens->contains($token)) {
+            $this->tokens->add($token);
+            $token->setTokenable($this);
+        }
+
+        return $this;
+    }
+
+    public function removeToken(AccessToken $token): static
+    {
+        if ($this->tokens->removeElement($token)) {
+            // set the owning side to null (unless already changed)
+            if ($token->getTokenable() === $this) {
+                $token->setTokenable(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

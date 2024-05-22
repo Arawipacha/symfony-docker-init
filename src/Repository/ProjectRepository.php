@@ -66,6 +66,9 @@ class ProjectRepository extends ServiceEntityRepository implements RepositoryPro
 
 
     public function updateProject(ProjectUpdateRequest $data):Project{
+        /**
+         * @var \App\Entity\Project
+         */
         $project = $this->find($data->getId());
         
         $project->setName($data->getName());
@@ -82,6 +85,8 @@ class ProjectRepository extends ServiceEntityRepository implements RepositoryPro
         $project->setName($data->getName());
         $this->getEntityManager()->flush();
 
+        
+        
         return $project;
     }
 

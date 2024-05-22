@@ -4,7 +4,8 @@ namespace App\Controller;
 
 use App\Core\Http\API\Filter\ProjectFilter;
 use App\Core\Http\Project\Search\SearchProjects;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\RegisterEmployeeRequest;
+use App\Http\Requests\RegisterUserRequest;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,8 +22,8 @@ AbstractController
     }
     //#[Route("api/register/ricette/{slug}-{id}", name:"api_register", requirements:['id'=>'\d+', 'slug'=>'[a-z0-9]'])] // esto sirve para validar y 
     //public function register(RegisterRequest $registerRequest, string $slug, int $id):JsonResponse
-    #[Route("api/register", methods: ["POST"], name: "api_register_api")]
-    public function __invoke(RegisterRequest $registerRequest, ProjectRepository $repo): JsonResponse
+    /* #[Route("api/register", methods: ["POST"], name: "api_register_api")]
+    public function __invoke(RegisterUserRequest $registerRequest, ProjectRepository $repo): JsonResponse
     {
         //$this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -32,17 +33,17 @@ AbstractController
             'email' => $registerRequest->getEmail(),
         ];
         return new JsonResponse($data);
-    }
+    } */
     
     
-    #[Route("register", methods: ["POST"], name: "api_register")]
-    public function register(RegisterRequest $registerRequest): JsonResponse
+    #[Route("/register", methods: ["POST"], name: "register")]
+    public function register(RegisterEmployeeRequest $registerRequest): JsonResponse
     {
         //$this->denyAccessUnlessGranted('ROLE_USER');
 
         
         $data = [
-            'name' => $registerRequest->getName(),
+            'name' => $registerRequest->getUserName(),
             'email' => $registerRequest->getEmail(),
         ];
         return new JsonResponse($data);
@@ -56,7 +57,7 @@ AbstractController
 
 
 
-    public function searchProject(RegisterRequest $request): Response
+    public function searchProject(RegisterEmployeeRequest $request): Response
     {
 
         $filter = ProjectFilter::create(
