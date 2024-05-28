@@ -1,11 +1,16 @@
-
-
 <template>
+
+    <button type="button" class="btn btn-primary" @click="handlerCreateProject"
+            style="--bs-btn-padding-y: .20rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
+                Nuovo
+    </button>
 
     <button type="button" class="btn btn-primary" @click="showModal = true"
         style="--bs-btn-padding-y: .20rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
         Edit
     </button>
+
+
 
 
     <Modal :show="showModal" :header="false" :stylemodal="'modal-md'" @onchange="showModal = $event">
@@ -18,8 +23,6 @@
             <input class="form-control form-control" type="text" placeholder="Name" v-model="project.name">
             <br>
             <!-- <input class="form-control" type="text" placeholder="Default input"> -->
-            
-            
         </div>
 
     </div>
@@ -45,6 +48,7 @@ import { ref } from 'vue';
 defineProps<{ project: ProjectInterface }>();
 const emit = defineEmits<{
     (e: "onChange", project: ProjectInterface): void;
+    (e: "onCreate"): void;
 }>();
 
 
@@ -57,6 +61,13 @@ const closeModal = () => {
 const handlerProject=(project: ProjectInterface)=>{
     emit("onChange",project);
     closeModal();
+}
+
+
+const handlerCreateProject =()=>{
+    showModal.value = true;
+    emit("onCreate");
+
 }
 </script>
 <style>

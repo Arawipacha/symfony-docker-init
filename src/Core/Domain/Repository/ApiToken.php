@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Repository;
 
-
-use App\Entity\AccessToken;
 use App\Entity\NewAccessToken;
 
 interface ApiToken{

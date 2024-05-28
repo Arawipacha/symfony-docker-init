@@ -9,26 +9,27 @@
           <th>
 
             <div class="  d-flex justify-content-between">
-
-
               <!-- <button type="button" class="btn btn-primary btn-sm"
                 style="--bs-btn-padding-y: .20rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
                 Edit
               </button> -->
-              <ProjectEdit v-if="project" :project="project" @on-change="handlerSaveProject"></ProjectEdit>
+              <ProjectEdit v-if="project" :project="project" @on-change="handlerSaveProject" @on-create="handlerNewProject"></ProjectEdit>
               
               <ProjectList :projects="projects" @on-project="handlerChangeProject" @on-search-name="handlerSearchProject"></ProjectList>
 
 
             </div>
           </th>
-          <th v-if="monthdays" v-for="m in monthdays" :colspan="(m.fine - m.ini + 1)">
+          <th v-if="monthdays" v-for="m in monthdays" :colspan="(m.fine - m.ini+1)">
             <div>{{ months[m.month] }}</div>
           </th>
         </tr>
         <tr>
           <th>
-            {{ project?.name }}
+            <div class="d-flex justify-content-between">
+              <span>{{ project?.name }}</span>
+              <TaskEdit :show="showTask" :task="task" @onChangeModal="handlerChangeModalTask" @on-change="handlerSaveTask" @on-create="handlerNewTask"></TaskEdit>
+            </div>
           </th>
           <th v-for="day in buildTableHeader" class="cell text-center">
             {{ day }}
@@ -47,6 +48,7 @@
 
             {{ item.task.per }}%
             <!-- <span> + {{item.task[4]}}% done</span> -->
+            - {{item.daysAfter}}
           </td>
 
           <td v-if="item.daysAfter > 0" v-for="_ in range(1, item.daysAfter, 1)"></td>
@@ -58,15 +60,16 @@
   
 </template>
 <script setup lang="ts">
+
 import { computed, onMounted, reactive, ref} from 'vue';
 import { range } from '../uitils/range';
-
-
 import ProjectList from './../components/ProjectsList.vue'
 import ProjectEdit from './../components/EditProject.vue'
-
+import TaskEdit from './../components/EditTask.vue'
 import { useGanttStore } from '../stores/gantt.store';
 import { ProjectInterface } from '../interfaces/project.interface';
+import { TaskInterface } from '../interfaces/task.interface';
+import { Task } from '../models/task';
 
 
 interface IMonth {
@@ -75,18 +78,13 @@ interface IMonth {
   fine: number;
 }
 
-interface Task {
-  name: string;
-  ini: string;
-  fine: string;
-  color: string;
-  per: number;
-}
+
+const showTask = ref(false);
 
 
+const tasks= computed(()=>storeProject.getTasks)
 
-
-const tasks = ref<Task[]>([
+/* const tasks = ref<TaskInterface[]>([
   { name: 'Action 1', ini: '2024/05/12', fine: '2024/05/12', color: '#4287f5', per: 80 },
   { name: 'Action 2', ini: '2024/05/12', fine: '2024/05/14', color: '#c1409b', per: 10 },
   { name: 'Action 3', ini: '2024/05/14', fine: '2024/05/17', color: '#0b9971', per: 20 },
@@ -94,7 +92,7 @@ const tasks = ref<Task[]>([
   { name: 'Action 5', ini: '2024/05/19', fine: '2024/05/22', color: '#4287f5', per: 100 },
   { name: 'Action 6', ini: '2024/05/12', fine: '2024/05/20', color: '#0b9971', per: 32 },
   { name: 'Action 7', ini: '2024/05/20', fine: '2024/07/02', color: '#0b9971', per: 32 },
-]);
+]); */
 
 const minDate = ref<number>();
 const maxDate = ref<number>();
@@ -104,6 +102,7 @@ const storeProject = useGanttStore();
 
 const projects = computed(() => storeProject.getprojects);
 const project = computed(() => storeProject.getproject);
+const task = computed(() => storeProject.select_task);
 
 
 
@@ -112,8 +111,12 @@ const setMinAndMaxDate = () => {
   let minDates: number[] = [];
 
   for (let i = 0; i < tasks.value.length; i++) {
-    minDates.push(new Date(tasks.value[i].ini).getTime());
-    maxDates.push(new Date(tasks.value[i].fine).getTime());
+    const task=  new Task(tasks.value[i]);
+    const ini = task.getIni();
+    const fine = task.getFine();
+    debugger
+    minDates.push(new Date(task.getIni()).getTime());
+    maxDates.push(new Date(task.getFine()).getTime());
   }
   minDate.value = new Date(Math.min.apply(null, minDates)).getTime();
   maxDate.value = new Date(Math.max.apply(null, maxDates)).getTime();
@@ -122,8 +125,8 @@ const setMinAndMaxDate = () => {
 
 onMounted(() => {
   storeProject.loadProjects();
-  setMinAndMaxDate();
-  buildTableHeader.value = buildheaderMonth();
+  //setMinAndMaxDate();
+  //buildTableHeader.value = buildheaderMonth();
 
 })
 
@@ -181,13 +184,13 @@ const months = reactive([
 ]);
 
 const buildTableBody = computed(() => {
-  const items: { daysBefore: number, daysAfter: number, task: Task, days: number }[] = []
+  const items: { daysBefore: number, daysAfter: number, task: TaskInterface, days: number }[] = []
 
   for (let i = 0; i < tasks.value.length; i++) {
-    const task = tasks.value[i];
-
-    const dMin = new Date(task.ini).getTime();
-    const dMax = new Date(task.fine).getTime();
+    const task = new Task(tasks.value[i]);
+debugger
+    const dMin = new Date(task.getIni()).getTime();
+    const dMax = new Date(task.getFine()).getTime();
 
     var days = diffInDays(dMax, dMin) + 1;
     var daysBefore = diffInDays(minDate.value!, dMin);
@@ -212,22 +215,59 @@ const diffInDays = (max: number, min: number) => {
 
 
 const handlerSearchProject=(payload: string)=>{
-  storeProject.loadProjects({ name: { "$contains": `%${payload}%` } }/* { name: {$eq: newval } } */)
+  //storeProject.loadProjects({ name: { "$contains": `%${payload}%` } }/* { name: {$eq: newval } } */)
+  storeProject.loadProjects({ name: payload })
 }
 
+const handlerNewProject=()=>{
+  storeProject.setProject({name:''});
+}
 
 const handlerChangeProject=(payload: ProjectInterface)=>{
   storeProject.setProject(payload);
+  storeProject.loadTasks().then(()=>{
+    
+    
+
+  }).finally(()=>{
+    rebuild();
+  });
   //storeProject.loadProjects({ name: { "$contains": `%${payload}%` } }/* { name: {$eq: newval } } */)
 }
 const handlerSaveProject=(payload:ProjectInterface)=>{
-  storeProject.saveProject(payload)
+  storeProject.saveProject(payload);
+}
+
+const handlerChangeModalTask= (payload:boolean)=>{
+  showTask.value=payload
+}
+
+const handlerSaveTask =(payload: TaskInterface)=>{
+  storeProject.saveTask(payload).then(res=>{
+    
+    rebuild();
+  });
 }
 
 
-const handlerSelectTask = (_: Task) => {
-  
+const rebuild=()=>{
+    minDate.value=undefined;
+    maxDate.value=undefined;
+    monthdays.value=[];
+    buildTableHeader.value=[];
+    setMinAndMaxDate();
+    buildTableHeader.value = buildheaderMonth();
+}
 
+const handlerNewTask=()=>{
+  storeProject.createTask();
+  showTask.value=true;
+}
+
+const handlerSelectTask = (task: TaskInterface) => {
+  debugger
+  storeProject.selectTask(task);
+  showTask.value=true;
 }
 </script>
 

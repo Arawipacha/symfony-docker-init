@@ -1,5 +1,5 @@
-import { ResultData } from "../interfaces/result.data.interface";
-import { ResultInterface } from "../interfaces/result.interface";
+import { ResultData } from "../interfaces/tauri/result.data.interface";
+import { ResultInterface } from "../interfaces/tauri/result.interface";
 import { Project } from "./project";
 
 export class ResultProject implements ResultInterface<Project>{

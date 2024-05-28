@@ -2,7 +2,7 @@
 
 namespace App\Security;
 
-use App\Repository\UserRepository;
+use App\Core\Domain\Repository\AccessTokenRepositoryInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,31 +15,34 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
-use Symfony\Component\Security\Core\Authentication\Token\TokenAuthenticatorInterface;
+
 
 
 class ApiTokenAuthenticator extends AbstractAuthenticator
 {
 
-    public function __construct(private UserRepository $userRepository,private Security $security) {
+    public function __construct(private AccessTokenRepositoryInterface $userRepository,private Security $security) {
         
     }
     public function supports(Request $request): ?bool
     {
-        return $request->headers->has('Authorization') && preg_match('/^Bearer (.+)$/', $request->headers->get('Authorization'), $matches);
-
-        //return str_starts_with($request->getPathInfo(),'/api/');
+        if(str_starts_with($request->getPathInfo(),'/api/login') || str_starts_with($request->getPathInfo(),'/api/register')){
+            return false;
+        }
+        
+        return (str_starts_with($request->getPathInfo(),'/api/')  || ($request->headers->has('Authorization') && preg_match('/^Bearer (.+)$/', $request->headers->get('Authorization'), $matches)));
     }
 
     public function authenticate(Request $request): Passport
-    {
-        $token= $request->headers->get('Authorization');
-        if(null === $token){
+    {   
+        preg_match('/^Bearer (.+)$/', $request->headers->get('Authorization'), $matches);
+        $token=count($matches)>0 ? $matches[1] : null;
+        if(  null === $token){
             throw new CustomUserMessageAuthenticationException("No Token provider");
         }
         return new SelfValidatingPassport(
             new UserBadge($token, function($token){
-                $user =  $this->userRepository->findBy(['token'=>$token]);
+                $user =  $this->userRepository->findByUserByToken($token,'User::class');
                 if(!$user){
                     throw new UserNotFoundException();
                 }

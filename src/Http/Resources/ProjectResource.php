@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Project\Resources;
+namespace App\Http\Resources;
 
-
+use App\Core\Http\API\Resources\BaseResource;
 use App\Entity\Project;
 
-final class ProjectResource{
-    public function __construct(public readonly array $projects) {
+  class ProjectResource implements BaseResource{
+    public function __construct(private readonly array $item) {
     }
 
     public static function createFromEntity(Project $project) : self {
@@ -25,5 +25,10 @@ final class ProjectResource{
                 'name'=>$project->getName()
             ]
         );
+    }
+
+
+    public function toArray():array{
+        return $this->item;
     }
 }

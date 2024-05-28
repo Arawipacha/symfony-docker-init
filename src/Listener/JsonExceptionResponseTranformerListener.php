@@ -20,6 +20,9 @@ class JsonExceptionResponseTranformerListener
             'class'=> get_class($exception),
             'code'=> JsonResponse::HTTP_INTERNAL_SERVER_ERROR,
             'message'=> $exception->getMessage(),
+            'method'=> $event->getRequest()->getMethod(),
+            'file'=> $exception->getFile(),
+            'line'=> $exception->getLine(),
         ];
         if($exception instanceof HttpExceptionInterface){
             $data['code']= $exception->getStatusCode();

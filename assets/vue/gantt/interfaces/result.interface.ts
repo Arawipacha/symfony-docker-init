@@ -1,7 +1,7 @@
+import { MetaInfinity } from "./meta";
 
-import { ResultData } from "./result.data.interface";
+export interface Result<T>{
+    items: T[];
+    meta: MetaInfinity;
 
-export interface ResultInterface<T>{
-    error?:string;
-    result:ResultData<T>;
 }

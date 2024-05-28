@@ -6,7 +6,7 @@ namespace App\Core\Http\API\Filter;
 
 use DateTime;
 
-class BaseFilter
+class BaseFilter implements FilterInterface
 {
     private const PAGE = 1;
     private const  LIMIT = 30;
@@ -25,6 +25,7 @@ class BaseFilter
 
     public function __construct(int $page, int $limit)
     {
+        
         if (0 !== $page) {
             $this->page = $page;
         } else {

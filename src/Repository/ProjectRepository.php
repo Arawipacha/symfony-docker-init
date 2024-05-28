@@ -2,8 +2,9 @@
 
 namespace App\Repository;
 
+use App\Core\Domain\Repository\BaseRepository;
 use App\Core\Domain\Repository\ProjectRepository as RepositoryProjectRepository;
-use App\Core\Http\API\Filter\ProjectFilter;
+
 use App\Core\Http\API\Response\PaginatedResponse;
 use App\Entity\Project;
 use App\Http\Requests\ProjectStoreRequest;
@@ -15,15 +16,17 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Project>
  */
-class ProjectRepository extends ServiceEntityRepository implements RepositoryProjectRepository
+class ProjectRepository extends ServiceEntityRepository implements BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Project::class);
     }
 
-
-    public function search(ProjectFilter $filter):PaginatedResponse{
+    /**
+     * @param  \App\Core\Http\API\Filter\ProjectFilter $filter
+     */
+    public function search($filter):PaginatedResponse{
 
         $page= $filter->page;
         $limit = $filter->limit;
@@ -51,8 +54,10 @@ class ProjectRepository extends ServiceEntityRepository implements RepositoryPro
         return PaginatedResponse::create(((Object)$paginator->getIterator())->getArrayCopy(),$paginator->count(),$page,$limit);
     }
 
-
-    public function createProject(ProjectStoreRequest $data):Project{
+    /**
+     * @param App\Http\Requests\ProjectStoreRequest $data
+     */
+    public function create($data):Project{
         $project = new Project();
         
         $project->setName($data->getName());
@@ -64,8 +69,11 @@ class ProjectRepository extends ServiceEntityRepository implements RepositoryPro
         return $project;
     }
 
-
-    public function updateProject(ProjectUpdateRequest $data):Project{
+    /**
+     * @param \App\Http\Requests\ProjectUpdateRequest $data
+     * @return \App\Entity\Project
+     */
+    public function update($data):Project{
         /**
          * @var \App\Entity\Project
          */
@@ -84,35 +92,8 @@ class ProjectRepository extends ServiceEntityRepository implements RepositoryPro
 
         $project->setName($data->getName());
         $this->getEntityManager()->flush();
-
-        
         
         return $project;
     }
 
-
-    //    /**
-    //     * @return Project[] Returns an array of Project objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Project
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

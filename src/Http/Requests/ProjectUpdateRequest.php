@@ -8,20 +8,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ProjectUpdateRequest implements FormRequest{
     #[Assert\NotBlank()]
-    private ?int $id;
+    private int $id;
 
     #[Assert\NotBlank(), Assert\Length(min:2)]
-    private ?string $name;
-
-    //private ?array $data;
+    private string $name;
 
     public function __construct(Request $request) {
         $data = json_decode($request->getContent(),true);
-        $this->name=$data['name'] ?? null;
-        $this->id=$data['id'] ?? null;
+        $this->name=$data['name'] ;
+        $this->id=$data['id'] ;
     }
-
-    
 
     /**
      * Get the value of nme

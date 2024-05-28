@@ -15,18 +15,16 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         api:
-            pattern: ^/api/
+            pattern: ^/api
             #user_checker: App\Security\APIAccessAllowedUserChecker
-            #stateless: true
-            #anonymous: false
-            #provider: app_user_provider
+            custom_authenticators:
+                - App\Security\ApiTokenAuthenticator
             json_login:
-                # api_login is a route we will create below
                 check_path: api_login
                 username_path: security.credentials.login
                 password_path: security.credentials.password
-            access_token:
-                token_handler: App\Security\AccessTokenHandler
+            #access_token:
+                #token_handler: App\Security\AccessTokenHandler
         main:
             lazy: true
             provider: app_user_provider
@@ -44,7 +42,7 @@ security:
         # allow unauthenticated users to access the login form
         - { path: ^/api/register, roles: PUBLIC_ACCESS }
         #- { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/projects, roles: IS_AUTHENTICATED }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

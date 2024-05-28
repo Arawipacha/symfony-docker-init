@@ -1,6 +1,6 @@
-export interface ProjectFilter{
-    id?: {},
-    name?:{}
+export interface BaseFilter{
+    id?: string; //{},
+    name?: string;//{}
 }
 /* pub struct ProjectFilter {
 	pub id: Option<OpValsInt64>,

@@ -1,8 +1,9 @@
 export interface TaskInterface{
     id?: string;
+    project_id: string;
     name: string;
-    dt_ini: string;
-    dt_fine: string;
+    ini: string;
+    fine: string;
     color: string;
-    percent: number;
+    per: number;
 }

@@ -1,0 +1,10 @@
+.z-index-2{
+    z-index: 1070;
+}
+.toasts-top-right{
+    right: 1px;
+}
+
+.p-fixed{
+    position: fixed !important;  
+  }

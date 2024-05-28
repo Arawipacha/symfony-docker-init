@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ProjectStoreRequest implements FormRequest{
     
-    #[Assert\NotBlank(), Assert\Length(min:2)]
+    #[Assert\NotBlank()]
     private ?string $name;
 
     //private ?array $data;

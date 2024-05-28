@@ -18,7 +18,7 @@ class ProjectController extends AbstractController
     public function __construct(
         private readonly SearchProjects $useCaseFilter,
         private readonly StoreProject $useCaseStore,
-         ) {
+        ) {
     }
 
 
@@ -26,16 +26,17 @@ class ProjectController extends AbstractController
     public function all(Request $request): Response
     {
     
+        $name=$request->get('order')?? null;
         $filter = ProjectFilter::create(
             1,
             10,
             'id',
-            $request->get('order'),
-            $request->get('name'),
+            $request->get('order')?? 'asc',
+            $request->get('name')?? null,
         );
 
         $response1 = $this->useCaseFilter->execute($filter);
-        return $this->json($response1->projects);
+        return $this->json($response1->items);
     }
 
 
@@ -43,13 +44,13 @@ class ProjectController extends AbstractController
     public function store(ProjectStoreRequest $request): Response
     {
         $response = $this->useCaseStore->execute($request);
-        return $this->json($response->projects);
+        return $this->json($response->toArray());
     }
 
     #[Route('/api/projects', methods:["PUT"], name: 'app_update_project')]
     public function update(ProjectUpdateRequest $request): Response
     {
         $response = $this->useCaseStore->execute($request);
-        return $this->json($response->projects);
+        return $this->json($response->toArray());
     }
 }

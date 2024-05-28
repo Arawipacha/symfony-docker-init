@@ -14,6 +14,10 @@ class Task
     #[ORM\Column]
     private ?int $id = null;
 
+    
+    /* #[ORM\Column]
+    private ?int $project_id = null;
+ */
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -23,8 +27,8 @@ class Task
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $fine = null;
 
-    #[ORM\Column(length: 10, nullable: true)]
-    private ?string $color = null;
+    #[ORM\Column(length: 10)]
+    private ?string $color = '#4287f5';
 
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $per = null;

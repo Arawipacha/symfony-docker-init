@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Core\Project\Search\DTO;
+namespace App\Core\Http\Project\Search\DTO;
 
 use App\Core\Http\API\Response\PaginatedResponse;
 use App\Entity\Project;
 
 final class SearchProjectsOutputDTO{
-    public function __construct(public readonly array $projects) {
+    public function __construct(public readonly array $items) {
     }
 
     public static function createFromPaginatedResponse(PaginatedResponse $paginatedResponse) : self {

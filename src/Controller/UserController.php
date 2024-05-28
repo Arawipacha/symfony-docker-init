@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Core\Domain\Repository\ApiToken;
-use App\Core\Domain\Repository\RegisterEmployee;
-use App\Core\Domain\Repository\RegisterUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,7 +11,6 @@ use App\Http\Requests\RegisterEmployeeRequest;
 use App\Repository\EmployeeRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class UserController extends AbstractController
 {
@@ -30,20 +27,15 @@ class UserController extends AbstractController
     {
 
         $user = $this->useCaseCreateUser->create($request);
-
-        $token = $this->useCaseCreateToken->createToken($user, "api_token");
-
         return new JsonResponse([
-
             'user'  => $user->getUserIdentifier(),
-            'token' => $token,
         ]);
     }
 
 
 
     #[Route('/api/login', name: 'api_login', methods: ['POST'])]
-    public function index(#[CurrentUser] ?User $user, SerializerInterface $serializer): Response
+    public function index(#[CurrentUser] ?User $user): Response
     {
         if (null === $user) {
             return new JsonResponse([
@@ -52,8 +44,6 @@ class UserController extends AbstractController
         }
 
         $token = $this->useCaseCreateToken->createToken($user, "api_token");
-        //$data =$serializer->serialize($token,'json',[]);
-        //$data=json_decode($data);
         return new JsonResponse([
             'user'  => $user->getUserIdentifier(),
             'token' =>  $token->plainTextToken,
