@@ -1,6 +1,6 @@
 <template>
   <div id="gantt" class="container-fluid dark p-0">
-    <table class="table table-sm  table-dark">
+    <table class="table table-sm  table-dark" >
       <thead>
         <!-- <tr>
           <th :colspan="monthdays.reduce((accumulator, currentValue) => accumulator + (currentValue.fine - currentValue.ini + 1), 0)">sss</th>
@@ -16,11 +16,9 @@
               <ProjectEdit v-if="project" :project="project" @on-change="handlerSaveProject" @on-create="handlerNewProject"></ProjectEdit>
               
               <ProjectList :projects="projects" @on-project="handlerChangeProject" @on-search-name="handlerSearchProject"></ProjectList>
-
-
             </div>
           </th>
-          <th v-if="monthdays" v-for="m in monthdays" :colspan="(m.fine - m.ini+1)">
+          <th v-if="monthdays && !loading" v-for="m in monthdays" :colspan="(m.fine - m.ini+1)">
             <div>{{ months[m.month] }}</div>
           </th>
         </tr>
@@ -31,12 +29,12 @@
               <TaskEdit :show="showTask" :task="task" @onChangeModal="handlerChangeModalTask" @on-change="handlerSaveTask" @on-create="handlerNewTask"></TaskEdit>
             </div>
           </th>
-          <th v-for="day in buildTableHeader" class="cell text-center">
+          <th  v-for="day in buildTableHeader" class="cell text-center">
             {{ day }}
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="!loading">
         <tr v-if="buildTableBody" v-for="item in buildTableBody">
           <td @click="handlerSelectTask(item.task)" class="cursor">
             {{ item.task.name }}
@@ -44,11 +42,9 @@
 
           <td v-if="item.daysBefore > 0" v-for="_ in range(1, item.daysBefore, 1)"></td>
 
-          <td class="event-cell" :colspan="item.days" :style="{ 'background-color': `${item.task.color}` }">
+          <td class="event-cell" :colspan="item.days" :style="{ cursor:'pointer', 'background-color': `${item.task.color}` }" @click="handlerSelectTask(item.task)">
 
             {{ item.task.per }}%
-            <!-- <span> + {{item.task[4]}}% done</span> -->
-            - {{item.daysAfter}}
           </td>
 
           <td v-if="item.daysAfter > 0" v-for="_ in range(1, item.daysAfter, 1)"></td>
@@ -103,7 +99,7 @@ const storeProject = useGanttStore();
 const projects = computed(() => storeProject.getprojects);
 const project = computed(() => storeProject.getproject);
 const task = computed(() => storeProject.select_task);
-
+const loading=computed(()=>storeProject.getLoading)
 
 
 const setMinAndMaxDate = () => {

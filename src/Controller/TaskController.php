@@ -41,6 +41,8 @@ class TaskController extends AbstractController
         );
 
         $response1 = $this->useCaseFilter->execute($filter);
+        //$this->headers->set('Symfony-Debug-Toolbar-Replace', '1');
+        //return $this->json($response1->items,200,['Symfony-Debug-Toolbar-Replace'=>1]);
         return $this->json($response1->items);
     }
 

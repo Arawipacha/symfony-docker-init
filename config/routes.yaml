@@ -1,10 +1,12 @@
-controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+#controllers:
+#    resource:
+#        path: ../src/Controller/
+#        namespace: App\Controller
+#    type: attribute
 
-
-index:
-    path: /
-    controller: App\Controller\RegisterAction::index
+#index:
+#    path: /
+#    controller: App\Controller\RegisterAction::index
+routing:
+  resource: "../src/Projects/List/Infrastructure/Config/routes.yaml"
+  #type: yaml

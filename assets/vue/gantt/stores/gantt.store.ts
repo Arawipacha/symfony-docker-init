@@ -12,6 +12,7 @@ interface State {
     project?:ProjectInterface,
     //tasks: TaskInterface[];
     select_task?: TaskInterface;
+    loading:boolean;
   }
 
 
@@ -20,6 +21,7 @@ interface State {
   export const useGanttStore = defineStore('authUser', {
     state: (): State => ({
       projects: [],
+      loading:false,
       //tasks:[],
     }),
     getters: {
@@ -27,6 +29,8 @@ interface State {
       getTask: (state) => state.select_task,
       getprojects: (state) => state.projects,
       getproject: (state) => state.project,
+      getLoading: (state) => state.loading,
+      
     },
     actions: {
       
@@ -37,6 +41,7 @@ interface State {
         })
       },
       async loadTasks (filter?: TaskFilter) {
+        this.loading=true;
         if(filter && this.project && this.project.id){
           filter.project_id = this.project.id;
         }else if(this.project && this.project.id){
@@ -46,6 +51,7 @@ interface State {
         if(filter){
           await  requestTasks(filter).then((res)=>{
             if(this.project){
+              this.loading=false;
               this.project.tasks=res.items;
             }
           })
@@ -57,7 +63,7 @@ interface State {
       async saveProject(payload: ProjectInterface){
         if(payload.id){
           await fetchUpdateProject(payload).then(res=>{
-            this.project=res;
+            this.project={...this.project,...res};
             stateToast.success("Dati aggiornati");
           });
         }else{

@@ -1,0 +1,3 @@
+App\Projects\List\Infrastructure\Controllers\ProjectsListerController:
+  resource: App\Projects\List\Infrastructure\Controllers\ProjectsListerController
+  type: attribute

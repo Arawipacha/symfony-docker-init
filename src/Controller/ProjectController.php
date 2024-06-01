@@ -50,7 +50,7 @@ class ProjectController extends AbstractController
     #[Route('/api/projects', methods:["PUT"], name: 'app_update_project')]
     public function update(ProjectUpdateRequest $request): Response
     {
-        $response = $this->useCaseStore->execute($request);
+      $response = $this->useCaseStore->execute($request);
         return $this->json($response->toArray());
     }
 }
