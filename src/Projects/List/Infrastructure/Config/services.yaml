@@ -1,0 +1,3 @@
+services:
+  App\Projects\List\Infrastructure\Controllers\ProjectsListerController:
+    public: true

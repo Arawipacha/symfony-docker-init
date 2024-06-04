@@ -6,9 +6,9 @@ declare(strict_types=1);
 namespace App\Projects\List\Infrastructure\Repositories;
 
 use App\Projects\List\Domain\Project;
-use App\Projects\List\Domain\ProjectRepository;
+use App\Projects\List\Domain\ProjectDomainRepository;
 
-class InfileProjectRepository implements ProjectRepository
+class InfileProjectRepository implements ProjectDomainRepository
 {
     private $projects = [];
     public function __construct()

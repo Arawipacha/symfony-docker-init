@@ -7,11 +7,11 @@ namespace App\Projects\List\Application;
 use App\Projects\List\Application\Response\ProjectResponse;
 use App\Projects\List\Application\Response\ProjectsResponse;
 use App\Projects\List\Domain\Exceptions\ProjectsNotFoundException;
-use App\Projects\List\Domain\ProjectRepository;
+use App\Projects\List\Domain\ProjectDomainRepository;
 
 class ProjectsLister
 {
-    public function __construct(private ProjectRepository $projectRepository)
+    public function __construct(private ProjectDomainRepository $projectRepository)
     {
     }
 

@@ -9,14 +9,14 @@ use App\Projects\List\Application\Response\ProjectResponse;
 use App\Projects\List\Application\Response\ProjectsResponse;
 use App\Projects\List\Domain\Exceptions\ProjectsNotFoundException;
 use App\Projects\List\Domain\Project;
-use App\Projects\List\Domain\ProjectRepository;
+use App\Projects\List\Domain\ProjectDomainRepository;
 use PHPUnit\Framework\TestCase;
 
 class ProjectsListerTest extends TestCase
 {
     public function test_should_return_list_projects(): void
     {
-        $orderRepository = $this->createMock(ProjectRepository::class);
+        $orderRepository = $this->createMock(ProjectDomainRepository::class);
         $orderRepository->expects(self::once())
           ->method('searchAllProjects')
           ->with()
@@ -35,7 +35,7 @@ class ProjectsListerTest extends TestCase
     {
 
         $this->expectException(ProjectsNotFoundException::class);
-        $orderRepository = $this->createMock(ProjectRepository::class);
+        $orderRepository = $this->createMock(ProjectDomainRepository::class);
         $orderRepository->expects(self::once())
           ->method('searchAllProjects')
           ->with()
