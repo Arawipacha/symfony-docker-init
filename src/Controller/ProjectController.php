@@ -22,7 +22,7 @@ class ProjectController extends AbstractController
     }
 
 
-    #[Route('/api/projects', methods:['GET', 'HEAD'], name: 'app_search_projects',/* condition:"service('route_checker').check(request)" */)]
+    //#[Route('/api/projects/old', methods:['GET', 'HEAD'], name: 'app_search_projects',/* condition:"service('route_checker').check(request)" */)]
     public function all(Request $request): Response
     {
     
@@ -40,14 +40,14 @@ class ProjectController extends AbstractController
     }
 
 
-    #[Route('/api/projects', methods:["POST"], name: 'app_store_project')]
+    //#[Route('/api/projects', methods:["POST"], name: 'app_store_project')]
     public function store(ProjectStoreRequest $request): Response
     {
         $response = $this->useCaseStore->execute($request);
         return $this->json($response->toArray());
     }
 
-    #[Route('/api/projects', methods:["PUT"], name: 'app_update_project')]
+    //#[Route('/api/projects', methods:["PUT"], name: 'app_update_project')]
     public function update(ProjectUpdateRequest $request): Response
     {
       $response = $this->useCaseStore->execute($request);

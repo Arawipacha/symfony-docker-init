@@ -1,6 +1,6 @@
 <?php
 
-//declare(strict_type=1);
+declare(strict_types=1);
 
 namespace App\Projects\List\Infrastructure\Controllers;
 
@@ -15,14 +15,14 @@ final class ProjectsListerController
     {
     }
 
-    #[Route(path: 'projects-lister', methods: ['GET','HEAD'], name: 'projects-list')]
+    #[Route(path: '/api/projects', methods: ['GET','HEAD'], name: 'projects-list')]
     public function __invoke(): JsonResponse
     {
         //inject on instance of ProjectLister in your contructor
         //$response = ($this->orderLister)();
 
         $response = $this->orderLister->__invoke();
-        $jsonData = json_encode($response->getProjects(), JSON_PRETTY_PRINT);
+        $jsonData = json_encode(['items'=>$response->getProjects()], JSON_PRETTY_PRINT);
         return new JsonResponse($jsonData, Response::HTTP_OK, [], true);
     }
 }

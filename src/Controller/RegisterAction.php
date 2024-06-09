@@ -71,7 +71,7 @@ AbstractController
 
         $response = $this->useCase->execute($filter);
 
-        return $this->json($response->projects);
+        return $this->json($response->items);
 
     }
 }

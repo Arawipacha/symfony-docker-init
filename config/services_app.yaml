@@ -1,0 +1,36 @@
+parameters:
+
+services:
+
+  _defaults:
+    autowire: true # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+  App\:
+    resource: "../src/"
+    exclude:
+      - "../src/DependencyInjection/"
+      - "../src/Entity/"
+      - "../src/Kernel.php"
+      #- "../src/Projects"
+
+  #App\Projects\List\Infrastructure\Controllers\ProjectsListerController:
+  #  public: true
+  #App\Projects\List\Domain\ProjectDomainRepository:
+  #  alias: App\Projects\List\Infrastructure\Repositories\DoctrineProjectRepository
+    #alias: App\Projects\List\Infrastructure\Repositories\InfileProjectRepository
+
+  App\Listener\JsonExceptionResponseTranformerListener:
+    tags:
+      - {
+          name: kernel.event_listener,
+          event: kernel.exception,
+          method: onKernelException,
+          priority: 100,
+        }
+
+  App\Security\APIAccessAllowedUserChecker:
+    tags:
+      - { name: security.user_checker.api, priority: 5 }
+
+#imports:
+#    - { resource: ../src/Projects/List/Infrastructure/Config/services.yaml }

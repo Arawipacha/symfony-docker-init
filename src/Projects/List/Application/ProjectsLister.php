@@ -15,14 +15,12 @@ class ProjectsLister
     {
     }
 
-
     public function __invoke(): ProjectsResponse
     {
         $projects = $this->projectRepository->searchAllProjects();
 
         if(empty($projects)) {
             throw new ProjectsNotFoundException();
-
         }
 
         return new ProjectsResponse(...$this->toResponse($projects));
@@ -36,7 +34,7 @@ class ProjectsLister
     {
         $projectsResponse = [];
         foreach($projects as $project) {
-            $projectsResponse[] = new ProjectResponse($project->getProjectId(), $project->getName());
+            $projectsResponse[] = new ProjectResponse($project->id->value, $project->name->value());
         }
         return $projectsResponse;
 

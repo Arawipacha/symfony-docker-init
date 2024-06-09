@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Projects\List\Domain;
 
-class Project
+readonly final class Project
 {
     public function __construct(
-        private int $projectId,
-        private string $name
+        public ProjectId $id,
+        public ProjectName $name
     ) {
     }
 
@@ -16,15 +16,8 @@ class Project
         int $projectId,
         string $name
     ): self {
-        return new self($projectId, $name);
+        return new self(new ProjectId($projectId), new ProjectName($name));
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-    public function getProjectId(): int
-    {
-        return $this->projectId;
-    }
+
 }
