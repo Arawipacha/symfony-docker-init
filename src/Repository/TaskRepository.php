@@ -3,9 +3,9 @@
 namespace App\Repository;
 
 use App\Core\Domain\Repository\BaseRepository;
-use App\Core\Http\API\Response\PaginatedResponse;
-use App\Entity\Project;
+
 use App\Entity\Task;
+use App\Shared\Domain\Response\PaginatedResponse;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;

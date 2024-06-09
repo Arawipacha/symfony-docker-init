@@ -33,7 +33,7 @@ class ProjectsLister
     public function toResponse(mixed $projects): array
     {
         $projectsResponse = [];
-        foreach($projects as $project) {
+        foreach($projects as  $project) {
             $projectsResponse[] = new ProjectResponse($project->id->value, $project->name->value());
         }
         return $projectsResponse;

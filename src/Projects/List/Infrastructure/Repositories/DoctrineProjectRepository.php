@@ -9,6 +9,8 @@ use App\Entity\Project;
 use App\Projects\List\Domain\Project as ProjectDomain;
 use App\Projects\List\Domain\ProjectDomainRepository;
 use App\Repository\ProjectRepository;
+use App\Shared\Domain\Response\PaginatedResponse;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 class DoctrineProjectRepository extends ProjectRepository implements ProjectDomainRepository
 {
@@ -27,5 +29,41 @@ class DoctrineProjectRepository extends ProjectRepository implements ProjectDoma
         },$data);
         
         return $data;
+    }
+
+    public function search($filter): PaginatedResponse
+    {   
+        
+        $page= $filter->page;
+        $limit = $filter->limit;
+        $sort = $filter->sort;
+        $order = $filter->order;
+        $name = $filter->name;
+        /* $from = $filter->from ?: \Datetime::createFromFormat('Y-m-d','2024-01-01') ;
+        $to = $filter->to ?: \Datetime::createFromFormat('Y-m-d','2024-01-01') ;; */
+
+        $qb = $this->createQueryBuilder('b');
+        $qb->orderBy(sprintf('b.%s',$sort),$order);
+        
+
+        if($name !== null){
+            $qb->andWhere('b.name LIKE :name')
+        ->setParameter('name', "%$name%");
+        }
+        
+
+        $paginator = new Paginator($qb->getQuery());
+        $paginator->getQuery()
+        ->setFirstResult($limit * ($page -1))
+        ->setMaxResults($limit);
+        
+        return PaginatedResponse::create(((Object)$paginator->getIterator())->getArrayCopy(),$paginator->count(),$page,$limit,
+        function($items){    
+            return array_map(function(Project $item){
+                return ProjectDomain::create($item->getId(),$item->getName());
+            },$items);
+        });
+
+        
     }
 }

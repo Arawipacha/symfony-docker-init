@@ -1,3 +1,6 @@
-App\Projects\List\Infrastructure\Controllers\ProjectsListerController:
-  resource: App\Projects\List\Infrastructure\Controllers\ProjectsListerController
+#App\Projects\List\Infrastructure\Controllers\ProjectsListerController:
+#  resource: App\Projects\List\Infrastructure\Controllers\ProjectsListerController
+#  type: attribute
+App\Projects\List\Infrastructure\Controllers\ProjectsSearchController:
+  resource: App\Projects\List\Infrastructure\Controllers\ProjectsSearchController
   type: attribute

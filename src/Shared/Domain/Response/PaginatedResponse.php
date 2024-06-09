@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Infrastructure;
+namespace App\Shared\Domain\Response;
 
 //data Mapper
 class PaginatedResponse{
@@ -15,7 +15,10 @@ class PaginatedResponse{
 
 
 
-    public static function create(array $items, int $total, int $page, int $limit){
+    public static function create(array $items, int $total, int $page, int $limit,callable $mappingEntity=null){
+        if($mappingEntity!=null){
+            $items=$mappingEntity($items);
+        }
         if($limit ===0){
             $lastPage = 0;
         }else{

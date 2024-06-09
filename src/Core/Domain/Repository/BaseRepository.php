@@ -5,8 +5,7 @@ namespace App\Core\Domain\Repository;
 
 use App\Core\Contracts\FormRequest;
 use App\Core\Http\API\Filter\FilterInterface;
-use App\Core\Http\API\Response\PaginatedResponse;
-
+use App\Shared\Domain\Response\PaginatedResponse;
 
 interface BaseRepository{
     public function search(FilterInterface $filter):PaginatedResponse;

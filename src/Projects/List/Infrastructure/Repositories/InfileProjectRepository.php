@@ -9,9 +9,9 @@ use App\Entity\Project as EntityProject;
 use App\Projects\List\Domain\Project;
 use App\Projects\List\Domain\ProjectDomainRepository;
 use App\Repository\ProjectRepository;
+use App\Shared\Domain\Response\PaginatedResponse;
 use Doctrine\Persistence\ManagerRegistry;
-
-
+use Exception;
 
 class InfileProjectRepository implements ProjectDomainRepository
 {
@@ -36,4 +36,9 @@ class InfileProjectRepository implements ProjectDomainRepository
         
         return $this->projects;
     }
+    public function search($filter): PaginatedResponse{
+        throw new Exception('');
+    }
+
+
 }

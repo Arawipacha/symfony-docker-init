@@ -15,7 +15,7 @@ final class ProjectsListerController
     {
     }
 
-    #[Route(path: '/api/projects', methods: ['GET','HEAD'], name: 'projects-list')]
+    #[Route(path: '/api/projects/list', methods: ['GET','HEAD'], name: 'projects-list')]
     public function __invoke(): JsonResponse
     {
         //inject on instance of ProjectLister in your contructor

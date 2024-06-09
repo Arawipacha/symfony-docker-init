@@ -22,8 +22,11 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    App\Projects\List\Infrastructure\Controllers\ProjectsListerController:
+    #App\Projects\List\Infrastructure\Controllers\ProjectsListerController:
+    #  public: true
+    App\Projects\List\Infrastructure\Controllers\ProjectsSearchController:
       public: true
+      
     App\Projects\List\Domain\ProjectDomainRepository:
       alias: App\Projects\List\Infrastructure\Repositories\DoctrineProjectRepository
       # alias: orders\list\infrastructure\repositories\InFileOrdersListerRepository

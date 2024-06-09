@@ -3,12 +3,12 @@
 namespace App\Repository;
 
 use App\Core\Domain\Repository\BaseRepository;
-use App\Core\Domain\Repository\ProjectRepository as RepositoryProjectRepository;
 
-use App\Core\Http\API\Response\PaginatedResponse;
+
+
 use App\Entity\Project;
-use App\Http\Requests\ProjectStoreRequest;
-use App\Http\Requests\ProjectUpdateRequest;
+
+use App\Shared\Domain\Response\PaginatedResponse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
