@@ -5,8 +5,8 @@ declare(strict_types=1);
 
 namespace App\Projects\List\Infrastructure\Repositories;
 
-use App\Entity\Project as EntityProject;
-use App\Projects\List\Domain\Project;
+
+use App\Projects\Shared\Domain\Project;
 use App\Projects\List\Domain\ProjectDomainRepository;
 use App\Repository\ProjectRepository;
 use App\Shared\Domain\Response\PaginatedResponse;

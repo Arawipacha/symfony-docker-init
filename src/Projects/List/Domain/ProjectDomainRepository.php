@@ -8,6 +8,6 @@ use App\Shared\Domain\Response\PaginatedResponse;
 
 interface ProjectDomainRepository
 {
-    public function searchAllProjects(): array;
+    //public function searchAllProjects(): array;
     public function search($filter): PaginatedResponse;
 }

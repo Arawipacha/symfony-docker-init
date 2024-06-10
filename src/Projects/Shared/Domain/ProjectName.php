@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Projects\List\Domain;
+namespace App\Projects\Shared\Domain;
 
-use App\Projects\List\Domain\Exceptions\ProjectsNameLengthException;
+use App\Projects\Shared\Domain\Exceptions\ProjectsNameLengthException;
 use App\Shared\Domain\StringValueObject;
 
 final  class ProjectName extends StringValueObject{

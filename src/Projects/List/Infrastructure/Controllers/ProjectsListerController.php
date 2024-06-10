@@ -21,8 +21,9 @@ final class ProjectsListerController
         //inject on instance of ProjectLister in your contructor
         //$response = ($this->orderLister)();
 
-        $response = $this->orderLister->__invoke();
+        /* $response = $this->orderLister->__invoke();
         $jsonData = json_encode(['items'=>$response->getProjects()], JSON_PRETTY_PRINT);
-        return new JsonResponse($jsonData, Response::HTTP_OK, [], true);
+        return new JsonResponse($jsonData, Response::HTTP_OK, [], true); */
+        return new JsonResponse([], Response::HTTP_OK, [], true); 
     }
 }

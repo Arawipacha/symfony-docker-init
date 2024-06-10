@@ -6,7 +6,7 @@ namespace App\Projects\List\Application;
 
 use App\Projects\List\Application\Response\ProjectResponse;
 use App\Projects\List\Application\Response\ProjectsResponse;
-use App\Projects\List\Domain\Exceptions\ProjectsNotFoundException;
+use App\Projects\Shared\Domain\Exceptions\ProjectsNotFoundException;
 use App\Projects\List\Domain\ProjectDomainRepository;
 
 class ProjectsLister
@@ -15,8 +15,9 @@ class ProjectsLister
     {
     }
 
-    public function __invoke(): ProjectsResponse
+    /* public function __invoke(): ProjectsResponse
     {
+        
         $projects = $this->projectRepository->searchAllProjects();
 
         if(empty($projects)) {
@@ -24,7 +25,7 @@ class ProjectsLister
         }
 
         return new ProjectsResponse(...$this->toResponse($projects));
-    }
+    } */
 
 
     /*@param  \App\Projects\List\Domain\Project[] $projects

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Projects\List\Domain;
+namespace App\Projects\Shared\Domain;
 
 readonly final class Project
 {
@@ -13,10 +13,10 @@ readonly final class Project
     }
 
     public static function create(
-        int $projectId,
+        int $id,
         string $name
     ): self {
-        return new self(new ProjectId($projectId), new ProjectName($name));
+        return new self(new ProjectId($id), new ProjectName($name));
     }
 
 
