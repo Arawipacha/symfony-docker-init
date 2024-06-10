@@ -28,6 +28,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Projects/List/Infrastructure/Repositories/Persistence/Doctrine/Mapping'
                 prefix: 'App\Projects\Shared\Domain'
                 alias: projects
+            Tasks:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Tasks/List/Infrastructure/Repositories/Persistence/Doctrine/Mapping'
+                prefix: 'App\Tasks\Shared\Domain'
+                alias: tasks
         controller_resolver:
             auto_mapping: true
 

@@ -1,3 +1,4 @@
 imports:
     - { resource: services_app.yaml }
     - { resource: ../src/Projects/List/Infrastructure/Config/services.yaml }
+    - { resource: ../src/Tasks/List/Infrastructure/Config/services.yaml }

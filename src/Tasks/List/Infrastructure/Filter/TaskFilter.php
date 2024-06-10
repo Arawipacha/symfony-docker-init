@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Projects\List\Infrastructure\Filter;
+namespace App\Tasks\List\Infrastructure\Filter;
 
 use App\Shared\Infrastructure\Filter\BaseFilter;
 

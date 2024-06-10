@@ -27,7 +27,7 @@ class TaskController extends AbstractController
     }
 
 
-    #[Route('/api/project/{id}/tasks', methods:['GET', 'HEAD'], name: 'app_search_tasks',/* condition:"service('route_checker').check(request)" */)]
+    #[Route('/api/project/{id}/tasks/old', methods:['GET', 'HEAD'], name: 'app_search_tasks',/* condition:"service('route_checker').check(request)" */)]
     public function all(Request $request): Response
     {
     

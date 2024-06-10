@@ -1,0 +1,3 @@
+App\Tasks\List\Infrastructure\Controllers\TasksSearchController:
+  resource: App\Tasks\List\Infrastructure\Controllers\TasksSearchController
+  type: attribute

@@ -9,4 +9,8 @@ index:
     controller: App\Controller\RegisterAction::index
 routing:
   resource: "../src/Projects/List/Infrastructure/Config/routes.yaml"
-  #type: yaml
+  type: yaml
+
+tasks_list_routes:
+  resource: '../src/Tasks/List/Infrastructure/Config/routes.yaml'
+  type: yaml

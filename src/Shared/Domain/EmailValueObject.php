@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain;
 
-use App\Shared\Domain\Exception\EmailInvalidException;
+use App\Shared\Domain\Exceptions\EmailInvalidException;
 
 class EmailValueObject
 {
